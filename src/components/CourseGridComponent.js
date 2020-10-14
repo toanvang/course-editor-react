@@ -69,7 +69,7 @@ export default class CourseGridComponent extends React.Component {
                         Add Course</button>
                 </div>
                 <table className="table">
-                    <tr>
+                    <tr>ß
                         <td>Recent Documents</td>
                         <td>Owned By</td>
                         <td>
@@ -77,9 +77,6 @@ export default class CourseGridComponent extends React.Component {
                                 className="btn btn-sm btn-success mx-2 fa fa-sort-alpha-down wbdv-header wbdv-sort"></button>
                             <Link to="/courses">
                                 <button
-                                    onClick={
-                                        this.props.displayMode
-                                    }
                                 className="btn btn-sm btn-success mx-2 fa fa-list wbdv-button wbdv-list-layout"></button>
                             </Link>
                             <Route path="/courses" exact><CourseTableComponent/></Route>

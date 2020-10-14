@@ -5,6 +5,8 @@ import {findCourseById} from "../services/CourseService";
 import LessonTabsComponent from "./LessonTabsComponent";
 import ModuleListComponent from "./ModuleListComponent";
 import TopicPillsComponent from "./TopicPillsComponent";
+import WidgetListComponent from "../containers/WidgetListContainer";
+import WidgetListContainer from "../containers/WidgetListContainer";
 
 export default class CourseEditorComponent extends React.Component {
     state ={
@@ -23,7 +25,7 @@ export default class CourseEditorComponent extends React.Component {
     render() {
         return(
             <div>
-                <nav className="navbar navbar-expand-md navbar-dark bg-dark">
+                <nav className="navbar navbar-expand-md navbar-light bg-light">
                     <a href="#"
                        className="float-right btn btn-sm btn-light mr-2 wbdv-course-editor wbdv-close"><i
                         className="fas fa-times"></i></a>
@@ -39,7 +41,7 @@ export default class CourseEditorComponent extends React.Component {
                     <div className="row bg-light ml-0 mr-0">
                         <ModuleListComponent/>
                         <TopicPillsComponent/>
-                        {/*<WidgetListComponent/>*/}
+                        <WidgetListContainer/>
 
                     </div>
                 </div>
