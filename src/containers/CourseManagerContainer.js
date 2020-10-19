@@ -13,12 +13,6 @@ export class CourseManagerContainer extends React.Component {
     state = {
         courses: [],
     }
-    // displayMode = () => {
-    //     this.setState({
-    //         display: !boolean
-    //     });
-    // }
-
     render() {
         return (
             <BrowserRouter>
@@ -64,7 +58,8 @@ export class CourseManagerContainer extends React.Component {
 
                     <Route
                             // colon mean it will pass what is actually in the url, not the word courseId
-                            path="/edit/:courseId"
+                            // path is the array, any of these two link will map to the course editor
+                            path={["/edit/:courseId", "/edit/:courseId/modules/:moduleId"]}
                             exact
                             component={CourseEditorComponent}/>
                 </div>

@@ -1,36 +1,34 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 // import './index.css';
-import"bootstrap/dist/css/bootstrap.min.css"
-import"font-awesome/css/font-awesome.css"
+import "bootstrap/dist/css/bootstrap.min.css"
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {CourseManagerContainer} from "./containers/CourseManagerContainer";
-import Hello from "./components/Hello";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Profile from "./components/Profile";
+import CourseEditorComponent from "./components/CourseEditorComponent";
+import HelloContainer from "./containers/HelloContainer";
 import {combineReducers, createStore} from "redux";
 import {Provider} from "react-redux";
+import Counter from "./components/Counter";
 import CounterContainer from "./containers/CounterContainer";
-import HelloContainer from "./containers/HelloContainer";
 import fsm from "./reducers/fsm"
-import widgetsReducer from "./reducers/widgetsReducer"
+import widgetsReducer from "./reducers/widgetsReducer";
+import moduleReducer from "./reducers/moduleReducer";
+import courseReducer from "./reducers/courseReducer";
+import {lessonReducer} from "./reducers/lessonReducer";
+import "font-awesome/css/font-awesome.min.css";
+import {CourseManagerContainer} from "./containers/CourseManagerContainer";
 
 const reducers = combineReducers({
-    fsm, widgetsReducer
+    fsm, widgetsReducer, moduleReducer, courseReducer, lessonReducer
 })
-
-// where fsm store the state
 const store = createStore(reducers)
 
-
-
 ReactDOM.render(
-    // Provider take the store and trickles down to all component that care about that state
     <Provider store={store}>
         <CourseManagerContainer/>
-        {/*Hello only wants msg in the state which is called substate*/}
-        {/*When Provider instantiate Hello component, connect function is invoked*/}
-        <HelloContainer />
-        <CounterContainer />
     </Provider>,
     document.getElementById('root')
 );

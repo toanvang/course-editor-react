@@ -43,7 +43,7 @@ export default class CourseGridComponent extends React.Component {
             modified: (new Date()).toDateString()
         }
         createCourse(newCourse)
-            // actualyCourse have id and meta data
+            // actualCourse have id and meta data
             .then(actualCourse => this.setState(prevState => ({
                 courses: [
                     //... mean clone the object

@@ -1,21 +1,88 @@
 import React from "react";
+import {lessonReducer} from "../reducers/lessonReducer";
+import {connect} from "react-redux";
+import lessonService from "../services/LessonService";
 
-export default class LessonTabsComponent extends React.Component{
-    state ={
-    }
-    render () {
-        return (
-            <div className="collapse navbar-collapse navbar-nav" id="navbarSupportedContent">
-                <ul className="navbar-nav justify-content-around w-100">
-                    <li><a className="nav-link btn-lg text-lg nav-item wbdv-lesson-tabs" href="#">Build</a></li>
-                    <li><a className="nav-link btn-lg nav-item wbdv-lesson-tabs" href="#">Pages</a></li>
-                    <li><a className="nav-link btn-lg nav-item wbdv-lesson-tabs" href="#">Theme</a></li>
-                    <li><a className="nav-link btn-lg nav-item wbdv-lesson-tabs" href="#">Store</a></li>
-                    <li><a className="nav-link btn-lg nav-item wbdv-lesson-tabs" href="#">Apps</a></li>
-                    <li><a className="nav-link btn-lg nav-item wbdv-lesson-tabs" href="#">Settings</a></li>
-                    <li><a className="btn btn-sm btn-success wbdv-lesson-add-btn" href="#"><i className="fas fa-plus"></i></a></li>
-                </ul>
-            </div>
-        )
-    }
-}
+const LessonTabs = (
+    {
+        moduleId,
+        lessons=[],
+        createLessonForModule,
+        deleteLesson,
+        updateLesson
+    }) =>
+    <div>
+        <h1>Lessons ({moduleId})</h1>
+        <ul className="nav nav-tabs">
+            {
+                lessons.map(lesson =>
+                        <li key={lesson._id} className="nav-item">
+                            <a class="nav-link">
+                                <button onClick={() => deleteLesson(lesson._id)}>
+                                    <i className="fa fa-times"></i>
+                                </button>
+
+                                {
+                                    !lesson.editing &&
+                                    <span>
+                    <button onClick={() =>
+                        updateLesson({...lesson, editing: true})
+                    }>
+                <i className="fa fa-pencil"></i>
+              </button>
+                                        {lesson.title}
+                  </span>
+                                }
+                                {
+                                    lesson.editing &&
+                                    <span>
+              <button onClick={() =>
+                  updateLesson({...lesson, editing: false})}>
+                <i className="fa fa-check"></i>
+              </button>
+                    <input value={lesson.title}/>
+                  </span>
+                                }
+                            </a>
+                        </li>
+                )
+            }
+        </ul>
+        <button onClick={() => createLessonForModule(moduleId)}>
+            Create
+        </button>
+    </div>
+
+const stateToPropertyMapper = (state) => ({
+    lessons: state.lessonReducer.lessons,
+    moduleId: state.lessonReducer.moduleId
+})
+
+const dispatchToPropertyMapper = (dispatch) => ({
+    updateLesson: (newLesson) =>
+        lessonService.updateLesson(newLesson)
+            .then(actualLesson => dispatch({
+                type: "UPDATE_LESSON",
+                lesson: actualLesson
+            })),
+    deleteLesson: (lessonId) =>
+        lessonService.deleteLesson(lessonId)
+            .then(status => dispatch({
+                type: "DELETE_LESSON",
+                lessonId
+            })),
+    createLessonForModule: (moduleId) =>
+        lessonService.createLessonForModule(
+            moduleId, {
+                title: "New Lesson"
+            })
+            .then(actualLesson => dispatch({
+                type: "CREATE_LESSON_FOR_MODULE",
+                lesson: actualLesson
+            }))
+})
+
+export default connect
+(stateToPropertyMapper,
+    dispatchToPropertyMapper)
+(LessonTabs)

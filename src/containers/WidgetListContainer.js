@@ -14,4 +14,7 @@ const propertyToDispatchMapper = (dispatch) =>({
     editWidget: (widget) => editWidget(dispatch, widget),
     okWidget: (widget) => okWidget(dispatch, widget)
 })
-export default connect (stateToPropertyMapper, propertyToDispatchMapper)(WidgetListComponent)
+export default connect
+    // connect pass state to this stateToPropertyMapper, pass dispatch to propertyToDispatchMapper
+(stateToPropertyMapper, propertyToDispatchMapper)
+(WidgetListComponent)

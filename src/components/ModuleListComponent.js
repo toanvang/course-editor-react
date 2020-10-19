@@ -1,52 +1,120 @@
 import React from "react";
-import"bootstrap/dist/css/bootstrap.min.css"
-import"../css/ModuleList.css"
+import {connect} from "react-redux";
+import moduleService from "../services/ModuleService"
 import {Link} from "react-router-dom";
-import {updateCourse} from "../services/CourseService";
+import {ModuleList} from"../css/ModuleList.css"
 
+const ModuleListComponent = (
+    {
+        course={},
+        modules=[],
+        deleteModule,
+        createModule,
+        updateModule,
+        edit,
+        ok,
+    }) =>
+    <div className="col-3 text-center d-block bg-secondary wbdv-module-list pr-lg-3">
+        <h3>Modules for {course.title}</h3>
+        {
+            modules.map(module =>
+                <div key={module._id}>
+                    {
+                        !module.editing &&
+                        <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
+                            <Link to={`/edit/${course._id}/modules/${module._id}`} className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">
+                                {module.title}
+                            </Link>
+                            <button
+                                onClick={() => edit(module)}
+                                className="btn btn-danger fas fa-edit float-right">
+                            </button>
+                            <button
+                                className="btn btn-danger fas fa-times-circle wbdv-module-item-delete-btn float-right"
+                                onClick={() => deleteModule(module)}>
+                            </button>
+                        </div>
+                    }
+                    {
+                        module.editing &&
+                        <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
+                            <input
+                                onChange={(event) => updateModule({
+                                    ...module,
+                                    title: event.target.value
+                                })}
+                                value={module.title}
+                                className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title"
+                            />
+                            <button
+                                className ="btn btn-light fa fa-check float-right"
+                                onClick={() => ok(module)}>
+                            </button>
+                            <button
+                                className="btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"
+                                onClick={() => deleteModule(module)}>
+                            </button>
+                        </div>
+                    }
+                </div>
+            )
+        }
+        {/*course object let we know which module belong to the course*/}
+        <button
+            className="fa fa-plus btn btn-success align-self-end"
+            onClick={() => createModule(course)}>
+        </button>
+    </div>
 
-export default class ModuleListComponent extends React.Component{
-    state ={
-    }
-    render () {
-        return (
-            <div className="col-3 text-center d-block bg-secondary wbdv-module-list pr-lg-3">
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 1 -
-                        jQuery</a>
-                    <a className="btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"></a>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 2 -
-                        React</a>
-                    <a className=" btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"></a>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 3 -
-                        Redux</a>
-                    <a className=" btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"></a>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 4 -
-                        Native</a>
-                    <a className=" btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"></a>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 5 -
-                        Angular</a>
-                    <a className=" btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"></a>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 6 -
-                        Node</a>
-                    <a className=" btn btn-danger far fa-times-circle wbdv-module-item-delete-btn float-right"></a>
-                </div>
-                <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                    <a href="#" className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">Module 7 -
-                        Mongo</a>
-                    <a className=" btn btn-danger wbdv-module-item-delete-btn float-right" href="#"><i className="far fa-times-circle"></i></a>
-                </div>
-            </div>
-        )
-    }
-}
+// export default ModuleListComponent
+
+const stateToPropertyMapper = (state) => ({
+    modules: state.moduleReducer.modules,
+    course: state.courseReducer.course
+})
+
+const propertyToDispatchMapper = (dispatch) => ({
+    ok: (module) =>
+        moduleService.updateModule(module._id, {
+            ...module, editing: false
+        }).then(status => dispatch({
+            type: "UPDATE_MODULE",
+            module: {...module, editing: false}
+        })),
+    edit: (module) =>
+        moduleService.updateModule(module._id, {
+            ...module, editing: true
+        }).then(status =>
+            dispatch({
+                type: "UPDATE_MODULE",
+                module: {...module, editing: true}
+            })),
+    deleteModule: (module) =>
+        moduleService.deleteModule(module._id)
+            .then(status => dispatch({
+                type: "DELETE_MODULE",
+                module: module
+            })),
+    createModule: (course) =>
+        moduleService.createModuleForCourse(course._id, {
+            title: "New Module"
+        }).then(actualModule => dispatch({
+            type: "CREATE_MODULE",
+            module: actualModule
+        })),
+    updateModule: (module) =>
+        dispatch({
+            type: "UPDATE_MODULE",
+            module: module
+        })
+    // moduleService.updateModule(module._id, module)
+    //   .then(status => dispatch({
+    //     type: "UPDATE_MODULE",
+    //     module: module
+    //   }))
+})
+
+export default connect
+( stateToPropertyMapper,
+    propertyToDispatchMapper)
+(ModuleListComponent)
