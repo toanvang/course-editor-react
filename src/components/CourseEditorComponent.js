@@ -10,7 +10,6 @@ import LessonTabsComponent from "../components/LessonTabsComponent";
 import {Link, Route} from "react-router-dom";
 import TopicPillsComponent from "./TopicPillsComponent";
 
-
 class CourseEditorComponent extends React.Component {
 
     componentDidMount() {
@@ -61,14 +60,14 @@ class CourseEditorComponent extends React.Component {
                     <div className="row bg-light ml-0 mr-0">
                         <ModuleListComponent/>
                         <div className="col-9 row bg-light">
-                        <Route
-                            // colon mean it will pass what is actually in the url, not the word courseId
-                            // path is the array, any of these two link will map to the course editor
-                            path={"/course/:courseId/modules/:moduleId/lessons/:lessonId"}
-                            exact
-                            component={TopicPillsComponent}/>
-                        <WidgetListContainer/>
-                    </div>
+                            <Route
+                                // colon mean it will pass what is actually in the url, not the word courseId
+                                // path is the array, any of these two link will map to the course editor
+                                path={"/course/:courseId/modules/:moduleId/lessons/:lessonId"}
+                                exact
+                                component={TopicPillsComponent}/>
+                            <WidgetListContainer/>
+                        </div>
                 </div>
             </div>
             </div>

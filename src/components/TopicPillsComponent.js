@@ -6,7 +6,9 @@ import {topicReducer} from "../reducers/topicReducer";
 import {Link} from "react-router-dom";
 import moduleService from "../services/ModuleService";
 import LessonService from "../services/LessonService";
+import ModuleList from "../css/ModuleList.css"
 import TopicService from "../services/TopicService";
+import "bootstrap/dist/css/bootstrap.min.css"
 
 const TopicPillsComponent = (
     {
@@ -20,7 +22,7 @@ const TopicPillsComponent = (
         editTopic,
         okTopic
     }) =>
-    <div className="col-xs-12 col-md-9 d-flex align-items-start wbdv-topic-pill-list">
+    <div className="col-xs-12 col-md-9 d-flex align-items-start wbdv-topic-pill-list w-100">
         <h4>Topics</h4>
         {/*<h1>Topics ({lessonId})</h1>*/}
         <div>
@@ -34,7 +36,7 @@ const TopicPillsComponent = (
                                         onClick={() => editTopic(topic)}>
                                         <i className="fa fa-pencil"></i>
                                     </button>
-                                        <Link className ="d-sm-inline btn btn-success btn-block wbdv-module-item-title"
+                                        <Link className =" btn btn-success m-1 wbdv-module-item-title"
                                             to={`/course/${courseId}/modules/${moduleId}/lessons/${lessonId}/topics/${topic._id}`}>
                                             {topic.title}
                                         </Link>
@@ -57,7 +59,7 @@ const TopicPillsComponent = (
                                                 title: event.target.value
                                             })}
                                             value={topic.title}
-                                            className="d-sm-inline btn-block wbdv-module-item-title"
+                                            className="wbdv-module-item-title"
                                         />
                                     </span>
                             }
@@ -66,7 +68,7 @@ const TopicPillsComponent = (
             }
         </div>
         <button
-            className="fa fa-plus btn btn-success align-self-end"
+            className="fa fa-plus btn btn-success"
             onClick={() => createTopicForLesson(lessonId)}>
         </button>
     </div>

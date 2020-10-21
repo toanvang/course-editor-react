@@ -7,22 +7,25 @@ const ModuleListComponent = (
     {
         course={},
         modules=[],
+        moduleId,
         deleteModule,
         createModule,
         updateModule,
-        selectId,
         edit,
         ok,
+
     }) =>
+
     <div className="col-3 text-center d-block bg-secondary wbdv-module-list pr-lg-3">
         {/*<h4>Modules for {course.title}</h4>*/}
         <h4>Modules</h4>
         {
             modules.map(module =>
-                <div key={module._id}>
+                <div key={module._id} >
                     {
                         !module.editing &&
-                        <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
+                        <div
+                            className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
 
                                     {/*<Link*/}
                                     {/*    onClick={() => selectId(module._id)}*/}
@@ -77,11 +80,25 @@ const ModuleListComponent = (
 // export default ModuleListComponent
 
 const stateToPropertyMapper = (state) => ({
+    moduleId: state.moduleReducer.moduleId,
     modules: state.moduleReducer.modules,
     course: state.courseReducer.course
 })
 
 const propertyToDispatchMapper = (dispatch) => ({
+    onIconClick(event) {
+        let newState = Object.assign({}, this.state);
+        for (let selection in newState.modules) {
+            if (selection !== event.target.id) {
+                newState.modules[selection].selected = false;
+            }
+        }
+
+        newState.modules[event.target.id].selected = true;
+        this.setState({
+            newState,
+        })
+    },
     select: (module) =>
         moduleService.updateModule(module._id, {
             ...module, selected: true

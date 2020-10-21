@@ -1,5 +1,5 @@
-const lessonUrl = "https://wbdv-generic-server.herokuapp.com/api/tv3/lessons"
-const topicUrl = "https://wbdv-generic-server.herokuapp.com/api/tv3/topics"
+const lessonUrl = "https://wbdv-generic-server.herokuapp.com/api/001033471/lessons"
+const topicUrl = "https://wbdv-generic-server.herokuapp.com/api/001033471/topics"
 
 export const findTopicsForLesson = (lessonId) =>
     fetch(`${lessonUrl}/${lessonId}/topics`)
