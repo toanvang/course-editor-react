@@ -3,11 +3,13 @@ import ReactDOM from 'react-dom';
 // import './index.css';
 import "bootstrap/dist/css/bootstrap.min.css"
 import App from './App';
+import CourseTable from "./components/CourseTableComponent";
 import * as serviceWorker from './serviceWorker';
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
 import CourseEditorComponent from "./components/CourseEditorComponent";
+import {CourseManagerContainer} from "./containers/CourseManagerContainer";
 import HelloContainer from "./containers/HelloContainer";
 import {combineReducers, createStore} from "redux";
 import {Provider} from "react-redux";
@@ -18,11 +20,11 @@ import widgetsReducer from "./reducers/widgetsReducer";
 import moduleReducer from "./reducers/moduleReducer";
 import courseReducer from "./reducers/courseReducer";
 import {lessonReducer} from "./reducers/lessonReducer";
+import{topicReducer} from "./reducers/topicReducer";
 import "font-awesome/css/font-awesome.min.css";
-import {CourseManagerContainer} from "./containers/CourseManagerContainer";
 
 const reducers = combineReducers({
-    fsm, widgetsReducer, moduleReducer, courseReducer, lessonReducer
+    fsm, widgetsReducer, moduleReducer, courseReducer, lessonReducer, topicReducer
 })
 const store = createStore(reducers)
 

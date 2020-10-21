@@ -28,7 +28,7 @@ export class CourseManagerContainer extends React.Component {
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav mr-auto">
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/courses">Course-Table</Link>
+                                    <Link className="nav-link" to="/table">Course-Table</Link>
                                 </li>
                                 <li className="nav-item">
                                     <Link className="nav-link" to="/grid">Course-Grid</Link>
@@ -43,14 +43,14 @@ export class CourseManagerContainer extends React.Component {
                                     <Link className="nav-link" to="/profile">Profile</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link className="nav-link" to="/edit/:courseId">Course-Editor</Link>
+                                    <Link className="nav-link" to="/course/:courseId">Course-Editor</Link>
                                 </li>
                             </ul>
 
                         </div>
                     </nav>
                     {/*"Link to" work together with route without dumping the original content*/}
-                    <Route path="/courses" exact><CourseTableComponent/></Route>
+                    <Route path="/table" exact><CourseTableComponent/></Route>
                     <Route path="/grid" exact><CourseGridComponent/></Route>
                     <Route path="/login" exact component={Login}/>
                     <Route path="/register" exact component={Register}/>
@@ -59,9 +59,11 @@ export class CourseManagerContainer extends React.Component {
                     <Route
                             // colon mean it will pass what is actually in the url, not the word courseId
                             // path is the array, any of these two link will map to the course editor
-                            path={["/edit/:courseId", "/edit/:courseId/modules/:moduleId"]}
+                            path={["/course/:courseId", "/course/:courseId/modules/:moduleId",
+                                "/course/:courseId/modules/:moduleId/lessons/:lessonId", "/course/:courseId/modules/:moduleId/lessons/:lessonId/topics/:topicId"]}
                             exact
                             component={CourseEditorComponent}/>
+
                 </div>
             </BrowserRouter>
         );

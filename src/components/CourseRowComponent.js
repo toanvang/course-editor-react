@@ -29,7 +29,7 @@ export default class CourseRowComponent extends React.Component {
                     {
                         !this.state.editing &&
                         // similar to concatenate edit with course id but better practice
-                        <Link to ={`/edit/${this.props.course._id}`}>{this.props.course.title}</Link>
+                        <Link to ={`/course/${this.props.course._id}`}>{this.props.course.title}</Link>
                     }
                 </td>
                 <td>{this.props.course.owner}</td>

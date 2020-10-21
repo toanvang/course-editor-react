@@ -2,8 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import moduleService from "../services/ModuleService"
 import {Link} from "react-router-dom";
-import {ModuleList} from"../css/ModuleList.css"
-
+import {ModuleList} from "../css/ModuleList.css"
 const ModuleListComponent = (
     {
         course={},
@@ -11,27 +10,36 @@ const ModuleListComponent = (
         deleteModule,
         createModule,
         updateModule,
+        selectId,
         edit,
         ok,
     }) =>
     <div className="col-3 text-center d-block bg-secondary wbdv-module-list pr-lg-3">
-        <h3>Modules for {course.title}</h3>
+        {/*<h4>Modules for {course.title}</h4>*/}
+        <h4>Modules</h4>
         {
             modules.map(module =>
                 <div key={module._id}>
                     {
                         !module.editing &&
                         <div className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-                            <Link to={`/edit/${course._id}/modules/${module._id}`} className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">
-                                {module.title}
-                            </Link>
+
+                                    {/*<Link*/}
+                                    {/*    onClick={() => selectId(module._id)}*/}
+                                    {/*    to={`/course/${course._id}/modules/${module._id}`}*/}
+                                    {/*    className="d-sm-inline btn-primary btn-block wbdv-module-item-title">*/}
+                                    {/*    {module.title}*/}
+                                    {/*</Link>*/}
+
+                                <Link
+                                    to={`/course/${course._id}/modules/${module._id}`}
+                                    className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">
+                                    {module.title}
+                                </Link>
+
                             <button
                                 onClick={() => edit(module)}
                                 className="btn btn-danger fas fa-edit float-right">
-                            </button>
-                            <button
-                                className="btn btn-danger fas fa-times-circle wbdv-module-item-delete-btn float-right"
-                                onClick={() => deleteModule(module)}>
                             </button>
                         </div>
                     }
@@ -44,7 +52,7 @@ const ModuleListComponent = (
                                     title: event.target.value
                                 })}
                                 value={module.title}
-                                className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title"
+                                className="d-sm-inline btn-block wbdv-module-item-title"
                             />
                             <button
                                 className ="btn btn-light fa fa-check float-right"
@@ -74,6 +82,15 @@ const stateToPropertyMapper = (state) => ({
 })
 
 const propertyToDispatchMapper = (dispatch) => ({
+    select: (module) =>
+        moduleService.updateModule(module._id, {
+            ...module, selected: true
+        }).then(status =>
+            dispatch({
+            type: "UPDATE_MODULE",
+            module: {...module, selected: true}
+        })),
+
     ok: (module) =>
         moduleService.updateModule(module._id, {
             ...module, editing: false
@@ -81,6 +98,7 @@ const propertyToDispatchMapper = (dispatch) => ({
             type: "UPDATE_MODULE",
             module: {...module, editing: false}
         })),
+
     edit: (module) =>
         moduleService.updateModule(module._id, {
             ...module, editing: true

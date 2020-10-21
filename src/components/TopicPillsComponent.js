@@ -1,65 +1,129 @@
 import React from "react";
+import {lessonReducer} from "../reducers/lessonReducer";
+import {connect} from "react-redux";
+import lessonService from "../services/LessonService";
+import {topicReducer} from "../reducers/topicReducer";
 import {Link} from "react-router-dom";
-import {updateCourse} from "../services/CourseService";
+import moduleService from "../services/ModuleService";
+import LessonService from "../services/LessonService";
+import TopicService from "../services/TopicService";
 
-export default class TopicPillsComponent extends React.Component{
-    state ={
-    }
-    render () {
-        return (
-            <div className="col-9 row bg-light">
-                <div className="col-12 d-flex align-items-start wbdv-topic-pill-list">
-                    <a href="#" className="btn btn-dark btn-block wbdv-topic-pill">Topic 1</a>
-                    <a href="#" className="btn btn-dark btn-block wbdv-topic-pill">Topic 2</a>
-                    <a href="#" className="btn btn-dark btn-block wbdv-topic-pill">Topic 3</a>
-                    <a href="#" className="btn btn-dark btn-block wbdv-topic-pill">Topic 4</a>
-                    <a className="btn btn-md btn-dark wbdv-topic-add-btn" href="#"><i className="fas fa-plus"></i></a>
-                </div>
+const TopicPillsComponent = (
+    {
+        courseId,
+        moduleId,
+        lessonId,
+        topics=[],
+        createTopicForLesson,
+        deleteTopic,
+        updateTopic,
+        editTopic,
+        okTopic
+    }) =>
+    <div className="col-xs-12 col-md-9 d-flex align-items-start wbdv-topic-pill-list">
+        <h4>Topics</h4>
+        {/*<h1>Topics ({lessonId})</h1>*/}
+        <div>
+            {
+                topics.map(topic =>
+                    <div key={topic._id}>
+                            {
+                                !topic.editing &&
+                                <span>
+                                    <button
+                                        onClick={() => editTopic(topic)}>
+                                        <i className="fa fa-pencil"></i>
+                                    </button>
+                                        <Link className ="d-sm-inline btn btn-success btn-block wbdv-module-item-title"
+                                            to={`/course/${courseId}/modules/${moduleId}/lessons/${lessonId}/topics/${topic._id}`}>
+                                            {topic.title}
+                                        </Link>
+                                </span>
+                            }
+                            {
+                                topic.editing &&
+                                <span>
+                                        {/*<button onClick={() =>  updateLesson({...lesson, editing: false})}>*/}
+                                    <button onClick={() => deleteTopic(topic._id)}>
+                                        <i className="fa fa-times"></i>
+                                    </button>
+                                        <button onClick={() =>  okTopic(topic)}>
+                                        <i className="fa fa-check"></i>
+                                        </button>
 
-                <div className="col-12 d-flex align-items-center justify-content-end topic">
-                    <a href="#" className="btn btn-sm btn-success">Save</a>
-                    <div className="custom-control custom-switch">
-                        <input type="checkbox" className="custom-control-input" id="customSwitches"/>
-                        <label className="custom-control-label" htmlFor="customSwitches">Preview</label>
+                                        <input
+                                            onChange={(event) => updateTopic({
+                                                ...topic,
+                                                title: event.target.value
+                                            })}
+                                            value={topic.title}
+                                            className="d-sm-inline btn-block wbdv-module-item-title"
+                                        />
+                                    </span>
+                            }
                     </div>
-                </div>
+                )
+            }
+        </div>
+        <button
+            className="fa fa-plus btn btn-success align-self-end"
+            onClick={() => createTopicForLesson(lessonId)}>
+        </button>
+    </div>
 
-                <div className="container">
-                    <div className="d-end">
-                        <h3 className="d-inline mb-5">Heading Widget</h3>
-                        <a href="#"
-                           className="float-right btn btn-sm btn-danger wbdv-row wbdv-button wbdv-delete"><i className="fas fa-plus"></i></a>
-                        <select className="float-right">
-                            <option value="Heading 1">Heading 1</option>
-                            <option value="Heading 2">Heading 2</option>
-                        </select>
-                        <a className="far btn btn-sm btn-warning fa-arrow-alt-circle-up float-right m-1"></a>
-                        <a className="far btn btn-sm btn-warning fa-arrow-alt-circle-down float-right m-1"></a>
-                    </div>
+const stateToPropertyMapper = (state) => ({
+    lessonId: state.topicReducer.lessonId,
+    topics: state.topicReducer.topics,
+    moduleId: state.lessonReducer.moduleId,
+    courseId: state.courseReducer.course._id,
+})
 
-                    <form className="mt-2">
-                        <div className="form-group">
-                            <input type="email" className="form-control" id="exampleFormControlInput1" placeholder="Heading text"/>
-                        </div>
-                        <div className="form-group">
-                            <select className="form-control" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <div className="form-group">
-                            <input type="text" className="form-control" placeholder="Widget Name"/>
-                        </div>
-                    </form>
-                    <h4>Preview</h4>
-                    <h2>Heading text</h2>
-                    <a href="#"
-                       className="float-right btn btn-sm btn-danger wbdv-row wbdv-button wbdv-delete far fa-times-circle "></a>
-                </div>
-            </div>
-        )
-    }
-}
+const dispatchToPropertyMapper = (dispatch) => ({
+    okTopic: (topic) =>
+        TopicService.updateTopic(topic._id, {
+            ...topic, editing: false
+        }).then(status => dispatch({
+            type: "UPDATE_TOPIC",
+            topic: {...topic, editing: false}
+        })),
+
+    editTopic: (topic) =>
+        // LessonService.updateLesson(lesson._id, {
+        //     ...lesson, editing: true
+        // }).then(status =>
+        dispatch({
+            type: "UPDATE_TOPIC",
+            topic: {...topic, editing: true}
+        }),
+    // updateLesson: (newLesson) =>
+    //     lessonService.updateLesson(newLesson)
+    //         .then(actuaLesson => dispatch({
+    //             type: "UPDATE_LESSON",
+    //             lesson: actuaLesson
+    //         })),
+    updateTopic: (topic) =>
+        dispatch({
+            type: "UPDATE_TOPIC",
+            topic: topic
+        }),
+    deleteTopic: (topicId) =>
+        TopicService.deleteTopic(topicId)
+            .then(status => dispatch({
+                type: "DELETE_TOPIC",
+                topicId
+            })),
+    createTopicForLesson: (lessonId) =>
+        TopicService.createTopicForLesson(
+            lessonId, {
+                title: "New Topic"
+            })
+            .then(actualTopic => dispatch({
+                type: "CREATE_TOPIC_FOR_LESSON",
+                topic: actualTopic
+            }))
+})
+
+export default connect
+(stateToPropertyMapper,
+    dispatchToPropertyMapper)
+(TopicPillsComponent)

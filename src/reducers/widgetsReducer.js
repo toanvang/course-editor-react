@@ -7,21 +7,6 @@ const initialState = {
             name: "Widget1",
             editing: false
         },
-        {
-            _id: "123",
-            name: "Widget2",
-            editing: false
-        },
-        {
-            _id: "123",
-            name: "Widget3",
-            editing: false
-        },
-        {
-            _id: "123",
-            name: "Widget4",
-            editing: false
-        }
     ]
 }
 

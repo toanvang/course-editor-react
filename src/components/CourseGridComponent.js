@@ -61,7 +61,6 @@ export default class CourseGridComponent extends React.Component {
     render() {
         return (
             <div>
-                {this.props.displayMode}
                 <div className="form-inline">
                     <input ref={myInput} type="text" className="float-right form-control mr-sm-2 wbdv-field wbdv-new-course"
                            placeholder="New Course Title"/>
@@ -69,17 +68,17 @@ export default class CourseGridComponent extends React.Component {
                         Add Course</button>
                 </div>
                 <table className="table">
-                    <tr>ß
+                    <tr>
                         <td>Recent Documents</td>
                         <td>Owned By</td>
                         <td>
                             <button
                                 className="btn btn-sm btn-success mx-2 fa fa-sort-alpha-down wbdv-header wbdv-sort"></button>
-                            <Link to="/courses">
+                            <Link to="/table">
                                 <button
                                 className="btn btn-sm btn-success mx-2 fa fa-list wbdv-button wbdv-list-layout"></button>
                             </Link>
-                            <Route path="/courses" exact><CourseTableComponent/></Route>
+                            <Route path="/table" exact><CourseTableComponent/></Route>
                         </td>
                     </tr>
                 </table>

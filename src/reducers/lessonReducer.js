@@ -1,12 +1,16 @@
 const initialState = {
-    lessons: []
+    lessons: [],
+    lesson: {
+        id: "",
+        title: ""
+    }
 }
-export const lessonReducer = (state = initialState, action) => {
+export const lessonReducer = (state=initialState, action) => {
     switch (action.type) {
         case "UPDATE_LESSON":
             return {
                 ...state,
-                lessons: state.lessons.map(lesson => lesson._id === action.lesson?action.lesson : lesson)
+                lessons: state.lessons.map(lesson => lesson._id === action.lesson._id ? action.lesson : lesson)
             }
         case "DELETE_LESSON":
             return {
@@ -17,7 +21,7 @@ export const lessonReducer = (state = initialState, action) => {
             return {
                 ...state,
                 lessons: action.lessons,
-                moduleId: action.moduleId
+                moduleId: action.moduleId,
             }
         case "CREATE_LESSON_FOR_MODULE":
             return {

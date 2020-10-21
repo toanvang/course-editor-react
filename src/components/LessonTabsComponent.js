@@ -2,69 +2,113 @@ import React from "react";
 import {lessonReducer} from "../reducers/lessonReducer";
 import {connect} from "react-redux";
 import lessonService from "../services/LessonService";
+import {Link} from "react-router-dom";
+import moduleService from "../services/ModuleService";
+import LessonService from "../services/LessonService";
+import "bootstrap/dist/css/bootstrap.min.css"
+
 
 const LessonTabs = (
     {
+        courseId,
         moduleId,
         lessons=[],
         createLessonForModule,
         deleteLesson,
-        updateLesson
+        updateLesson,
+        editLesson,
+        okLesson
     }) =>
     <div>
-        <h1>Lessons ({moduleId})</h1>
-        <ul className="nav nav-tabs">
+        {/*<h1>Lessons ({moduleId})</h1>*/}
+        <h4>Lessons</h4>
+        <tr>
             {
                 lessons.map(lesson =>
-                        <li key={lesson._id} className="nav-item">
-                            <a class="nav-link">
-                                <button onClick={() => deleteLesson(lesson._id)}>
-                                    <i className="fa fa-times"></i>
-                                </button>
-
-                                {
-                                    !lesson.editing &&
+                    <th key={lesson._id}>
+                            {
+                                !lesson.editing &&
                                     <span>
-                    <button onClick={() =>
-                        updateLesson({...lesson, editing: true})
-                    }>
-                <i className="fa fa-pencil"></i>
-              </button>
-                                        {lesson.title}
-                  </span>
-                                }
-                                {
+                                    <button
+                                        onClick={() => editLesson(lesson)}>
+                                        <i className="fa fa-pencil"></i>
+                                    </button>
+                                        <Link
+                                            className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title"
+                                            to={`/course/${courseId}/modules/${moduleId}/lessons/${lesson._id}`}>
+                                            {lesson.title}
+                                        </Link>
+
+                                    </span>
+                            }
+                            {
                                     lesson.editing &&
                                     <span>
-              <button onClick={() =>
-                  updateLesson({...lesson, editing: false})}>
-                <i className="fa fa-check"></i>
-              </button>
-                    <input value={lesson.title}/>
-                  </span>
-                                }
-                            </a>
-                        </li>
+                                        {/*<button onClick={() =>  updateLesson({...lesson, editing: false})}>*/}
+                                        <button onClick={() => deleteLesson(lesson._id)}>
+                                            <i className="fa fa-times"></i>
+                                        </button>
+                                        <button onClick={() =>  okLesson(lesson)}>
+                                        <i className="fa fa-check"></i>
+                                        </button>
+                                        <input
+                                            onChange={(event) => updateLesson({
+                                                ...lesson,
+                                                title: event.target.value
+                                            })}
+                                            value={lesson.title}
+                                            className="d-sm-inline btn-block wbdv-module-item-title"
+                                            />
+                                    </span>
+                            }
+                        </th>
                 )
             }
-        </ul>
-        <button onClick={() => createLessonForModule(moduleId)}>
-            Create
-        </button>
+            <th>
+                <button
+                    className="fa fa-plus btn btn-success align-self-end"
+                    onClick={() => createLessonForModule(moduleId)}>
+                </button>
+            </th>
+        </tr>
+
+
     </div>
 
 const stateToPropertyMapper = (state) => ({
     lessons: state.lessonReducer.lessons,
-    moduleId: state.lessonReducer.moduleId
+    moduleId: state.lessonReducer.moduleId,
+    courseId: state.courseReducer.course._id,
 })
 
 const dispatchToPropertyMapper = (dispatch) => ({
-    updateLesson: (newLesson) =>
-        lessonService.updateLesson(newLesson)
-            .then(actualLesson => dispatch({
+    okLesson: (lesson) =>
+        LessonService.updateLesson(lesson._id, {
+            ...lesson, editing: false
+        }).then(status => dispatch({
+            type: "UPDATE_LESSON",
+            lesson: {...lesson, editing: false}
+        })),
+
+    editLesson: (lesson) =>
+        // LessonService.updateLesson(lesson._id, {
+        //     ...lesson, editing: true
+        // }).then(status =>
+            dispatch({
                 type: "UPDATE_LESSON",
-                lesson: actualLesson
-            })),
+                lesson: {...lesson, editing: true}
+            }),
+    // updateLesson: (newLesson) =>
+    //     lessonService.updateLesson(newLesson)
+    //         .then(actuaLesson => dispatch({
+    //             type: "UPDATE_LESSON",
+    //             lesson: actuaLesson
+    //         })),
+    updateLesson: (lesson) =>
+        dispatch({
+            type: "UPDATE_LESSON",
+            lesson: lesson
+        }),
     deleteLesson: (lessonId) =>
         lessonService.deleteLesson(lessonId)
             .then(status => dispatch({
