@@ -1,10 +1,18 @@
 const initialState = {
     modules: [],
-    selected: false
+    selectedModule: {
+        _id: "",
+        title: ""
+    }
 }
 
 const moduleReducer = (state=initialState, action) => {
     switch (action.type) {
+        case "SELECTED_MODULE":
+            return {
+                ...state,
+                selectedModule: action.module
+            }
         case "FIND_MODULES_FOR_COURSE":
             return {
                 ...state,

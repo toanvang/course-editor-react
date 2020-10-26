@@ -37,9 +37,10 @@ class CourseEditorComponent extends React.Component {
         if(lessonId !== prevProps.match.params.lessonId) {
             this.props.findTopicsForLesson(lessonId)
         }
-
     }
+
     render() {
+
         return(
             <div>
                 <Link to="/table">
@@ -58,7 +59,7 @@ class CourseEditorComponent extends React.Component {
                 </table>
                 <div>
                     <div className="row bg-light ml-0 mr-0">
-                        <ModuleListComponent/>
+                        <ModuleListComponent />
                         <div className="col-9 row bg-light">
                             <Route
                                 // colon mean it will pass what is actually in the url, not the word courseId

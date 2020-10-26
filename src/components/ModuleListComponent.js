@@ -3,15 +3,16 @@ import {connect} from "react-redux";
 import moduleService from "../services/ModuleService"
 import {Link} from "react-router-dom";
 import {ModuleList} from "../css/ModuleList.css"
+import classNames from "classnames"
 const ModuleListComponent = (
     {
         course={},
         modules=[],
-        moduleId,
         deleteModule,
         createModule,
         updateModule,
         edit,
+        selectModule,
         ok,
 
     }) =>
@@ -21,12 +22,12 @@ const ModuleListComponent = (
         <h4>Modules</h4>
         {
             modules.map(module =>
-                <div key={module._id} >
+                <div key={module._id} className={`${module === selectModule? ""
+                    : "btn-success"} list-group-item wbdv-module-item`} >
                     {
                         !module.editing &&
                         <div
                             className="d-flex flex-column flex-md-row align-items-center wbdv-module-item">
-
                                     {/*<Link*/}
                                     {/*    onClick={() => selectId(module._id)}*/}
                                     {/*    to={`/course/${course._id}/modules/${module._id}`}*/}
@@ -35,8 +36,9 @@ const ModuleListComponent = (
                                     {/*</Link>*/}
 
                                 <Link
-                                    to={`/course/${course._id}/modules/${module._id}`}
-                                    className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title">
+                                    onClick={()=> selectModule(module)}
+                                    className="d-sm-inline btn btn-dark btn-block wbdv-module-item-title"
+                                    to={`/course/${course._id}/modules/${module._id}`}>
                                     {module.title}
                                 </Link>
 
@@ -78,35 +80,18 @@ const ModuleListComponent = (
     </div>
 
 // export default ModuleListComponent
-
 const stateToPropertyMapper = (state) => ({
+    selectedModuleId: state.moduleReducer.selectedModule,
     moduleId: state.moduleReducer.moduleId,
     modules: state.moduleReducer.modules,
     course: state.courseReducer.course
 })
 
 const propertyToDispatchMapper = (dispatch) => ({
-    onIconClick(event) {
-        let newState = Object.assign({}, this.state);
-        for (let selection in newState.modules) {
-            if (selection !== event.target.id) {
-                newState.modules[selection].selected = false;
-            }
-        }
-
-        newState.modules[event.target.id].selected = true;
-        this.setState({
-            newState,
-        })
-    },
-    select: (module) =>
-        moduleService.updateModule(module._id, {
-            ...module, selected: true
-        }).then(status =>
-            dispatch({
-            type: "UPDATE_MODULE",
-            module: {...module, selected: true}
-        })),
+    selectModule: (module) => dispatch ({
+        type: "SELECT_MODULE",
+        module: module
+    }),
 
     ok: (module) =>
         moduleService.updateModule(module._id, {
