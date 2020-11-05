@@ -62,7 +62,6 @@ export default class CourseTableComponent extends React.Component{
     }
 
     render() {
-
         return (
             <div>
                 {this.props.displayMode}

@@ -8,7 +8,6 @@ export default class CourseCardComponent extends React.Component{
         course: this.props.course
     }
     render (){
-
         return(
             <div className="card col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 m-2 p-0">
                 <img className="card-img-top d-flex"

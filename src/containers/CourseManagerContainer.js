@@ -1,5 +1,5 @@
 import React from "react";
-import {BrowserRouter, Route, Switch, Link} from "react-router-dom";
+import {BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import"bootstrap/dist/css/bootstrap.min.css"
 import Login from "../components/Login";
 import Register from "../components/Register";
@@ -15,7 +15,7 @@ export class CourseManagerContainer extends React.Component {
     }
     render() {
         return (
-            <BrowserRouter>
+            <Router>
                 <div>
                     <nav className="navbar navbar-expand-md navbar-dark bg-dark">
                         <Link to="/" className="navbar-brand wbdv-label wbdv-course-manager">Course Manager</Link>
@@ -60,12 +60,14 @@ export class CourseManagerContainer extends React.Component {
                             // colon mean it will pass what is actually in the url, not the word courseId
                             // path is the array, any of these two link will map to the course editor
                             path={["/course/:courseId", "/course/:courseId/modules/:moduleId",
-                                "/course/:courseId/modules/:moduleId/lessons/:lessonId", "/course/:courseId/modules/:moduleId/lessons/:lessonId/topics/:topicId"]}
+                                "/course/:courseId/modules/:moduleId/lessons/:lessonId",
+                                "/course/:courseId/modules/:moduleId/lessons/:lessonId/topics/:topicId",
+                                "/course/:courseId/modules/:moduleId/lessons/:lessonId/topics/:topicId/widgets/widgetId"]}
                             exact
                             component={CourseEditorComponent}/>
 
                 </div>
-            </BrowserRouter>
+            </Router>
         );
     }
 }

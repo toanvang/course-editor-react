@@ -9,6 +9,7 @@ import LessonService from "../services/LessonService";
 import ModuleList from "../css/ModuleList.css"
 import TopicService from "../services/TopicService";
 import "bootstrap/dist/css/bootstrap.min.css"
+import widgetService from "../services/WidgetService";
 
 const TopicPillsComponent = (
     {
@@ -24,7 +25,17 @@ const TopicPillsComponent = (
     }) =>
     <div className="col-xs-12 col-md-9 d-flex align-items-start wbdv-topic-pill-list w-100">
         <h4>Topics</h4>
-        {/*<h1>Topics ({lessonId})</h1>*/}
+        {/*<li>*/}
+        {/*    <Link to={`/edit/${courseId}/modules/${moduleId}/lessons/${lessonId}/topics/topic123`} className="nav-link">*/}
+        {/*        Topic 123*/}
+        {/*    </Link>*/}
+        {/*</li>*/}
+        {/*<li>*/}
+        {/*    <Link to={`/edit/${courseId}/modules/${moduleId}/lessons/${lessonId}/topics/topic234`} className="nav-link">*/}
+        {/*        Topic 234*/}
+        {/*    </Link>*/}
+        {/*</li>*/}
+        <h1>Topics</h1>
         <div>
             {
                 topics.map(topic =>
@@ -97,12 +108,7 @@ const dispatchToPropertyMapper = (dispatch) => ({
             type: "UPDATE_TOPIC",
             topic: {...topic, editing: true}
         }),
-    // updateLesson: (newLesson) =>
-    //     lessonService.updateLesson(newLesson)
-    //         .then(actuaLesson => dispatch({
-    //             type: "UPDATE_LESSON",
-    //             lesson: actuaLesson
-    //         })),
+
     updateTopic: (topic) =>
         dispatch({
             type: "UPDATE_TOPIC",

@@ -12,6 +12,7 @@ import CourseEditorComponent from "./components/CourseEditorComponent";
 import {CourseManagerContainer} from "./containers/CourseManagerContainer";
 import HelloContainer from "./containers/HelloContainer";
 import {combineReducers, createStore} from "redux";
+import Hello from "./components/Hello"
 import {Provider} from "react-redux";
 import Counter from "./components/Counter";
 import CounterContainer from "./containers/CounterContainer";
@@ -24,13 +25,15 @@ import{topicReducer} from "./reducers/topicReducer";
 import "font-awesome/css/font-awesome.min.css";
 
 const reducers = combineReducers({
-    fsm, widgetsReducer, moduleReducer, courseReducer, lessonReducer, topicReducer
+   fsm, widgetsReducer, moduleReducer, courseReducer, lessonReducer, topicReducer,
 })
 const store = createStore(reducers)
 
 ReactDOM.render(
     <Provider store={store}>
         <CourseManagerContainer/>
+
+
     </Provider>,
     document.getElementById('root')
 );
