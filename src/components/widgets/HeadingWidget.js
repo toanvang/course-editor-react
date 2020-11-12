@@ -19,36 +19,29 @@ const HeadingWidget = ({widget, topicId,  widgets, upWidget, downWidget, nameWid
                     <option value="HEADING">Heading</option>
                     <option value="PARAGRAPH">Paragraph</option>
                 </select>
-                <button
-                    onClick={() => downWidget(widget,widgets)}
-                    className="far btn btn-sm btn-warning fa-arrow-alt-circle-down float-right m-1"></button>
-                <button
-                    onClick={() => upWidget(widget, widget.order)}
-                    className="far btn btn-sm btn-warning fa-arrow-alt-circle-up float-right m-1"></button>
-                {/*{*/}
-                {/*    widget.order === 1 &&*/}
-                {/*    <button*/}
-                {/*        onClick={() => downWidget(widget, widget.order)}*/}
-                {/*        className="far btn btn-sm btn-warning fa-arrow-alt-circle-down float-right m-1"></button>*/}
-                {/*}*/}
-                {/*{*/}
-                {/*    widget.order === widgets.length &&*/}
-                {/*    <button*/}
-                {/*        onClick={() => upWidget(widget, widget.order)}*/}
-                {/*        className="far btn btn-sm btn-warning fa-arrow-alt-circle-up float-right m-1"></button>*/}
-                {/*}*/}
-                {/*{*/}
-                {/*    widget.order !== 1 && widget.order !== widgets.length &&*/}
-                {/*        <div>*/}
-                {/*    <button*/}
-                {/*        onClick={() => downWidget(widget, widget.order, topicId)}*/}
-                {/*        className="far btn btn-sm btn-warning fa-arrow-alt-circle-down float-right m-1"></button>*/}
-                {/*    <button*/}
-                {/*    onClick={() => upWidget(widget, widget.order)}*/}
-                {/*    className="far btn btn-sm btn-warning fa-arrow-alt-circle-up float-right m-1"></button>*/}
-                {/*        </div>*/}
-                {/*}*/}
-
+                {
+                    widgets.indexOf(widget) === 0 && widgets.length > 1 &&
+                    <button
+                        onClick={() => downWidget(widget,widgets)}
+                        className="far btn btn-sm btn-warning fa-arrow-alt-circle-down float-right m-1"></button>
+                }
+                {
+                    widgets.indexOf(widget) === widgets.length - 1 && widgets.length > 1 &&
+                    <button
+                        onClick={() => upWidget(widget,widgets)}
+                        className="far btn btn-sm btn-warning fa-arrow-alt-circle-up float-right m-1"></button>
+                }
+                {
+                    widgets.indexOf(widget) !== 0 && widgets.indexOf(widget) !== widgets.length - 1 && widgets.length > 1 &&
+                    <div>
+                            <button
+                                onClick={() => downWidget(widget,widgets)}
+                                className="far btn btn-sm btn-warning fa-arrow-alt-circle-down float-right m-1"></button>
+                            <button
+                                onClick={() => upWidget(widget, widgets)}
+                                className="far btn btn-sm btn-warning fa-arrow-alt-circle-up float-right m-1"></button>
+                        </div>
+                }
             </div>
 
             <form className="mt-2">

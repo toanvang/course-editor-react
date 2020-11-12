@@ -6,12 +6,13 @@ const initialState = {
 const widgetReducer = (state = initialState, action) => {
     switch (action.type) {
         case "FIND_WIDGETS_FOR_TOPIC":
-            return {
+            const newState = {
                 ...state,
                 // overwrite the widget with info come back from the server
                 widgets: action.widgets,
                 topicId: action.topicId
             }
+            return newState
         case "FIND_ALL_WIDGETS":
             return {
                 ...state,
@@ -22,16 +23,7 @@ const widgetReducer = (state = initialState, action) => {
                 ...state,
                 widgets: [...state.widgets, action.widget]
             }
-        // case "UPDATE_TOPIC":
-        //     return {
-        //         ...state,
-        //         topics: state.topics.map(topic => topic._id === action.topic ._id ? action.topic : topic)
-        //     }
-        // case "DELETE_TOPIC":
-        //     return {
-        //         ...state,
-        //         topics: state.topics.filter(topic => topic._id !== action.topicId)
-        //     }
+
         case "UPDATE_WIDGET":
             return {
                 ...state,

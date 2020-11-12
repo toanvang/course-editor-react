@@ -35,7 +35,6 @@ const TopicPillsComponent = (
         {/*        Topic 234*/}
         {/*    </Link>*/}
         {/*</li>*/}
-        <h1>Topics</h1>
         <div>
             {
                 topics.map(topic =>

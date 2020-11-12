@@ -136,55 +136,42 @@ const propertyToDispatchMapper = (dispatch) => ({
                 type: "UPDATE_WIDGET",
                 widget: {...widget, type: value}
             })),
+
     downWidget: (widget, widgets, topicId) => {
-        console.log(widgets)
         for (let i = 0; i < widgets.length; i++){
             if(i === widgets.indexOf(widget)){
                 let temp = widgets[i+1];
                 widgets[i+1] = widgets[i];
                 widgets[i] = temp;
-                console.log(widgets[i]);
-                console.log(widgets[i+1])
-                console.log(widgets)
                 break;
             }
-            // if(widgets[i].order === widget.order + 1){
-            //     let temp = widgets[i].order;
-            //     // sibling = widgets[i]
-            //     // siblingId = widgets[i].id
-            //     widgets[i].order =  widget.order
-            //     widget.order = temp;
-            //     break
-            // }
         }
-            widgetService.updateWidget(widget.id, {
-                ...widget
-            }).then(status =>
+
+            widgetService.reloadWidgets(widgets)
+                .then(status =>
                 dispatch({
-                    type: "UPDATE_WIDGET",
-                    widgets: widgets
+                    type: "FIND_WIDGETS_FOR_TOPIC",
+                    widgets: widgets,
+                    topicId
+
                 }))
     },
-        // widgetService.updateWidget(siblingId, {
-        //     ...sibling,
-        //     sibling.order: sibling.order + 1
-        // })
-        // widgetService.updateWidget(widget.id, {
-        //     ...widget,
-        //     order: order + 1
-        // }).then(status =>
-        //     dispatch({
-        //         type: "UPDATE_WIDGET",
-        //         widget: {...widget, order: order + 1}
-        //     }))},
-    upWidget: (widget, order) =>
-        widgetService.updateWidget(widget.id, {
-            ...widget, order: order - 1
-        }).then(status =>
+    upWidget: (widget, widgets, topicId) => {
+        for (let i = 0; i < widgets.length; i++){
+            if(i === widgets.indexOf(widget)){
+                let temp = widgets[i-1];
+                widgets[i-1] = widgets[i];
+                widgets[i] = temp;
+                break;
+            }
+        }
+        widgetService.reloadWidgets(widgets).then(status =>
             dispatch({
-                type: "UPDATE_WIDGET",
-                widget: {...widget, order: order - 1}
-            })),
+                type: "FIND_WIDGETS_FOR_TOPIC",
+                widgets: widgets,
+                topicId
+            }))
+    },
 
     textWidget: (widget, value) =>
         // widgetService.updateWidget(widget.id, {
