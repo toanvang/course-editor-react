@@ -18,6 +18,8 @@ const HeadingWidget = ({widget, topicId,  widgets, upWidget, downWidget, nameWid
                     className="float-right">
                     <option value="HEADING">Heading</option>
                     <option value="PARAGRAPH">Paragraph</option>
+                    <option value="LIST">List</option>
+                    <option value="IMAGE">Image</option>
                 </select>
                 {
                     widgets.indexOf(widget) === 0 && widgets.length > 1 &&

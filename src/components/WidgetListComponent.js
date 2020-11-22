@@ -9,9 +9,13 @@ import {connect} from "react-redux";
 // } from "../actions/widgetActions";
 import HeadingWidget from "./widgets/HeadingWidget";
 import ParagraphWidget from "./widgets/ParagraphWidget";
+import ListWidget from "./widgets/ListWidget"
+import ImageWidget from "./widgets/ImageWidget"
+
 import {Link} from "react-router-dom";
 import widgetService, {findWidgetsForTopic} from "../services/WidgetService";
 import TopicService from "../services/TopicService";
+
 
 const WidgetListComponent = ({
                         widgets=[], typeWidget, textWidget, upWidget, downWidget,
@@ -19,13 +23,14 @@ const WidgetListComponent = ({
                         nameWidget,
                         topicId,
                         widgetId,
+                        array,
                         deleteWidget,
                         createWidgetForTopic,
                         updateWidget,
                         editWidget,
+                        listWidgetDisplay,
                         okWidget}) =>
     <div>
-        {console.log(widgets)}
         <h1>Widgets!!!{topicId}</h1>
         {/*<a href="#" className="btn btn-sm btn-success">Save</a>*/}
 
@@ -90,6 +95,36 @@ const WidgetListComponent = ({
                                                          deleteWidget={deleteWidget}
                                                          editWidget={editWidget} widget ={widget} />
                                     }
+
+                            {
+                                widget.type ==="LIST" &&
+                                <ListWidget typeWidget={typeWidget}
+                                                 widgets={widgets}
+                                                 upWidget={upWidget}
+                                                 downWidget={downWidget}
+                                                 nameWidget={nameWidget}
+                                                 textWidget={textWidget}
+                                                 sizeWidget={sizeWidget}
+                                                 updateWidget={updateWidget}
+                                                 okWidget={okWidget}
+                                                 deleteWidget={deleteWidget}
+                                                listWidgetDisplay={listWidgetDisplay}
+                                                 editWidget={editWidget} widget ={widget} />
+                            }
+                            {
+                                widget.type ==="IMAGE" &&
+                                <ImageWidget typeWidget={typeWidget}
+                                                 widgets={widgets}
+                                                 upWidget={upWidget}
+                                                 downWidget={downWidget}
+                                                 nameWidget={nameWidget}
+                                                 textWidget={textWidget}
+                                                 sizeWidget={sizeWidget}
+                                                 updateWidget={updateWidget}
+                                                 okWidget={okWidget}
+                                                 deleteWidget={deleteWidget}
+                                                 editWidget={editWidget} widget ={widget} />
+                            }
                                     {/*<button onClick={() => editWidget(widget)}>Edit</button>*/}
                 {/*</span>*/}
                 {/*            }*/}
@@ -227,6 +262,18 @@ const propertyToDispatchMapper = (dispatch) => ({
                 type: "CREATE_WIDGET",
                 widget
             })),
+    listWidgetDisplay : (widget, array) => {
+        let preview;
+        array = widget.text.split("\n");
+        const listItems = array.map((item) =>
+            <li>{item}</li>
+        );
+        if (widget.size === "1") {
+            preview = <ol>{listItems}</ol>
+        } else {
+            preview = <ul>{listItems}</ul>
+        }
+    }
 
     // createWidgetForTopic: (topicId) => {
     //     createWidget(dispatch, topicId)

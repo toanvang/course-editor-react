@@ -19,6 +19,8 @@ const ParagraphWidget = ({widget, widgets,downWidget, upWidget, nameWidget, text
                         className="float-right">
                         <option value="HEADING">Heading</option>
                         <option value="PARAGRAPH">Paragraph</option>
+                            <option value="LIST">List</option>
+                            <option value="IMAGE">Image</option>
                     </select>
                         {
                                 widgets.indexOf(widget) === 0 && widgets.length > 1 &&
@@ -79,6 +81,7 @@ const ParagraphWidget = ({widget, widgets,downWidget, upWidget, nameWidget, text
                 {
                     widget.size === "1" &&
                     <h1>{widget.text}</h1>
+
                 }
                 {
                     widget.size === "2" &&

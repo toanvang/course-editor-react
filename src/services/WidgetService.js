@@ -37,7 +37,7 @@ export const reloadWidgets = (widgets) =>
         }
     }).then(response => response.json())
 
-export const deleteWidget = widgetId =>
+export const deleteWidget = (widgetId) =>
     fetch(`${WIDGET_URL}/${widgetId}`,{
         method: "DELETE"
     }).then(response => response.json())
