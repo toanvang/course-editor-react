@@ -35,12 +35,12 @@ export const reloadWidgets = (widgets) =>
         headers: {
             "content-type": "application/json"
         }
-    }).then(response => response.json())
+    })
 
 export const deleteWidget = (widgetId) =>
     fetch(`${WIDGET_URL}/${widgetId}`,{
         method: "DELETE"
-    }).then(response => response.json())
+    })
 
 export default {
     findAllWidgets, createWidgetForTopic, findWidgetsForTopic, updateWidget, deleteWidget, reloadWidgets

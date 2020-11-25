@@ -85,6 +85,24 @@ const ListWidget = ({widget,  listWidgetDisplay, widgets,downWidget, upWidget, n
                     </button>
 
                 </form>
+                <h4>Preview</h4>
+                <div class="d-none">
+                    {
+                        array = widget.text.split("\n")
+                    }
+                </div>
+                {
+                    widget.size === "1" &&
+                    <ul>
+                        {array.map((item) => <li>{item}</li>)}
+                    </ul>
+                }
+                {
+                    widget.size === "2" &&
+                    <ol>
+                        {array.map((item) => <li>{item}</li>)}
+                    </ol>
+                }
             </div>
         }
         {
